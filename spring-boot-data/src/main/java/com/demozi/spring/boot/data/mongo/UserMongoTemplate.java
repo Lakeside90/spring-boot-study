@@ -1,6 +1,8 @@
 package com.demozi.spring.boot.data.mongo;
 
 import com.demozi.spring.boot.data.entity.User;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -32,4 +34,13 @@ public class UserMongoTemplate {
         return mongoTemplate.find(query, User.class);
     }
 
+    public List<User> findByNameWithSort(String name, Sort sort) {
+        Query query = Query.query(Criteria.where("name").is(name)).with(sort);
+        return mongoTemplate.find(query, User.class);
+    }
+
+    public List<User> findByNameWithPage(String name, PageRequest pageRequest) {
+        Query query = Query.query(Criteria.where("name").is(name)).with(pageRequest);
+        return mongoTemplate.find(query, User.class);
+    }
 }

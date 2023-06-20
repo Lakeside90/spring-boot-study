@@ -4,6 +4,8 @@ import com.demozi.spring.boot.data.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,12 +22,14 @@ class UserMongoTemplateTest {
 
     @Test
     public void testInsert() {
-        User user = new User();
-        user.setId(UUID.randomUUID().toString());
-        user.setName("zhangsan");
-        user.setAge(18);
-        user.setAddress("安徽合肥");
-        userMongoTemplate.insert(user);
+        for (int i = 0; i < 20; i++) {
+            User user = new User();
+            user.setId(UUID.randomUUID().toString());
+            user.setName("zhangsan");
+            user.setAge(i);
+            user.setAddress("安徽合肥");
+            userMongoTemplate.insert(user);
+        }
     }
 
     @Test
@@ -34,4 +38,15 @@ class UserMongoTemplateTest {
         System.out.println(byName);
     }
 
+    @Test
+    public void testFindByNameWithSort() {
+        List<User> byName = userMongoTemplate.findByNameWithSort("zhangsan", Sort.by(Sort.Direction.DESC, "age"));
+        System.out.println(byName);
+    }
+
+    @Test
+    public void testFindByNameWithPage() {
+        List<User> byName = userMongoTemplate.findByNameWithPage("zhangsan", PageRequest.of(0, 10));
+        System.out.println(byName);
+    }
 }
