@@ -39,7 +39,7 @@ class UserRepositoryTest {
         User user = new User();
         user.setId("1234");
         user.setName("zhangsan");
-        user.setAge(18);
+        user.setAge(28);
         user.setAddress("安徽合肥");
         User insert = userRepository.save(user);
         System.out.println(insert);
@@ -75,6 +75,12 @@ class UserRepositoryTest {
         PageRequest pageRequest = PageRequest.of(0, 2, Sort.by("age"));
         Page<User> all = userRepository.findByName("zhangsan", pageRequest);
         System.out.println(all.getContent());
+    }
+
+    @Test
+    public void testFindByNameWithSort() {
+        List<User> byName = userRepository.findByName("zhangsan", Sort.by(Sort.Direction.DESC, "age"));
+        System.out.println(byName);
     }
 
     @Test

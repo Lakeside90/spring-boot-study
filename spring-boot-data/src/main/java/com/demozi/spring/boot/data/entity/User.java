@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author wujian  2023/6/19 19:49
  */
 @Data
-@Document(collection = "user")
+@Document(collection = "user_info")
 public class User implements Serializable {
 
     @Id
