@@ -1,4 +1,4 @@
-package com.demozi.spring.boot.data.entity;
+package com.demozi.spring.boot.data.mongo.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

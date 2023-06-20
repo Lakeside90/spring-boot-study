@@ -1,6 +1,6 @@
 package com.demozi.spring.boot.data.mongo;
 
-import com.demozi.spring.boot.data.entity.User;
+import com.demozi.spring.boot.data.mongo.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

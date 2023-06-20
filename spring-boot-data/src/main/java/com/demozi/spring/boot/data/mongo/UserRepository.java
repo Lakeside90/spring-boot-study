@@ -1,6 +1,6 @@
 package com.demozi.spring.boot.data.mongo;
 
-import com.demozi.spring.boot.data.entity.User;
+import com.demozi.spring.boot.data.mongo.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
