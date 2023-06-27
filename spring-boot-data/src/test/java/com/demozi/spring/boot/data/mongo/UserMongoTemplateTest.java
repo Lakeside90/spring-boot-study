@@ -49,4 +49,10 @@ class UserMongoTemplateTest {
         List<User> byName = userMongoTemplate.findByNameWithPage("zhangsan", PageRequest.of(0, 10));
         System.out.println(byName);
     }
+
+    @Test
+    public void testUpdateAgeById() {
+       long count = userMongoTemplate.updateAgeById("34fb8c5b-3890-46c3-b5c9-f5f69564a7f6", 23);
+        System.out.println(count);
+    }
 }

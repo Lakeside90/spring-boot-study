@@ -88,6 +88,4 @@ class UserRepositoryTest {
         List<User> byAge = userRepository.findByAgeLessThan(20);
         System.out.println(byAge);
     }
-
-
 }
