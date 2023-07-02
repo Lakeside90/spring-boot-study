@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * entity
@@ -24,4 +25,5 @@ public class User implements Serializable {
 
     private String address;
 
+    private Map<String, Object> props;
 }

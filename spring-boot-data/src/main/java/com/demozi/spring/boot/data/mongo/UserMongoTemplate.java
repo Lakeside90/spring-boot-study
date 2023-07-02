@@ -5,12 +5,14 @@ import com.mongodb.client.result.UpdateResult;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * MongoTemplate
@@ -51,5 +53,20 @@ public class UserMongoTemplate {
         Update update = Update.update("age", age);
         UpdateResult updateResult = mongoTemplate.updateFirst(query, update, User.class);
         return updateResult.getModifiedCount();
+    }
+
+    public List<User> findByProps(Map<String, Object> props) {
+        Query query = new Query();
+        props.forEach((key, value) -> {
+            Criteria criteria = Criteria.where("props." + key).is(value);
+            query.addCriteria(criteria);
+
+        });
+        return mongoTemplate.find(query, User.class);
+    }
+
+    public List<User> findByProps(String sql) {
+        BasicQuery query = new BasicQuery(sql);
+        return mongoTemplate.find(query, User.class);
     }
 }

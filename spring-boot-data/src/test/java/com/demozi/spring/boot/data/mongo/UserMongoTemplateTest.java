@@ -7,11 +7,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
- *
  * @author wujian  2023/6/20 15:23
  */
 @SpringBootTest
@@ -22,14 +23,16 @@ class UserMongoTemplateTest {
 
     @Test
     public void testInsert() {
-        for (int i = 0; i < 20; i++) {
-            User user = new User();
-            user.setId(UUID.randomUUID().toString());
-            user.setName("zhangsan");
-            user.setAge(i);
-            user.setAddress("安徽合肥");
-            userMongoTemplate.insert(user);
-        }
+        User user = new User();
+        user.setId(UUID.randomUUID().toString());
+        user.setName("zhangsan");
+        user.setAge(1);
+        user.setAddress("安徽合肥");
+        Map<String, Object> props = new HashMap<>();
+        props.put("role", "admin");
+        props.put("point", 19);
+        user.setProps(props);
+        userMongoTemplate.insert(user);
     }
 
     @Test
@@ -52,7 +55,20 @@ class UserMongoTemplateTest {
 
     @Test
     public void testUpdateAgeById() {
-       long count = userMongoTemplate.updateAgeById("34fb8c5b-3890-46c3-b5c9-f5f69564a7f6", 23);
+        long count = userMongoTemplate.updateAgeById("34fb8c5b-3890-46c3-b5c9-f5f69564a7f6", 23);
         System.out.println(count);
     }
+
+    @Test
+    public void testFindByProps() {
+//        Map<String, Object> props = new HashMap<>();
+//        props.put("role", "admin");
+//        props.put("point", 20);
+//        List<User> byProps = userMongoTemplate.findByProps(props);
+
+        String sql = "{ \"props.point\": { $gt: 10, $lt: 20 } }";
+        List<User> byProps = userMongoTemplate.findByProps(sql);
+        System.out.println(byProps);
+    }
+
 }
