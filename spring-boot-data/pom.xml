@@ -13,9 +13,20 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-boot-data</name>
 	<description>spring-boot-data</description>
+
 	<properties>
 		<java.version>8</java.version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>mvn-repo</id>
+			<name>mvn-repo</name>
+			<url>https://depend.iflytek.com/artifactory/mvn-repo/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -37,6 +48,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.iflytek.turing</groupId>
+			<artifactId>turing-planet-sdk</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

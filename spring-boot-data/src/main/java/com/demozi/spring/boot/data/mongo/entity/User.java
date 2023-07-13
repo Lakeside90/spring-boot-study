@@ -2,6 +2,7 @@ package com.demozi.spring.boot.data.mongo.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class User implements Serializable {
 
     private int age;
 
+    @Indexed
     private String name;
 
     private String address;

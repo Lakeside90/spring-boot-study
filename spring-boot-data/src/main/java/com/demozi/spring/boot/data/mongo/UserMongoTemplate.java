@@ -69,4 +69,12 @@ public class UserMongoTemplate {
         BasicQuery query = new BasicQuery(sql);
         return mongoTemplate.find(query, User.class);
     }
+
+    public long count() {
+       return mongoTemplate.count(Query.query(Criteria.where("age").is(1)), User.class);
+    }
+
+    public void delete() {
+        mongoTemplate.remove(Query.query(Criteria.where("age").is(1)), User.class);
+    }
 }

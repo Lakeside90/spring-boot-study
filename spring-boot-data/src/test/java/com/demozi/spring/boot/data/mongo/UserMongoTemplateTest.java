@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author wujian  2023/6/20 15:23
@@ -21,23 +22,45 @@ class UserMongoTemplateTest {
     @Autowired
     private UserMongoTemplate userMongoTemplate;
 
-    @Test
+    @Test()
     public void testInsert() {
-        User user = new User();
-        user.setId(UUID.randomUUID().toString());
-        user.setName("zhangsan");
-        user.setAge(1);
-        user.setAddress("安徽合肥");
-        Map<String, Object> props = new HashMap<>();
-        props.put("role", "admin");
-        props.put("point", 19);
-        user.setProps(props);
-        userMongoTemplate.insert(user);
+        CountDownLatch countDownLatch = new CountDownLatch(50);
+        for (int i = 0; i < 50; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int j = 0; j < 2000; j++) {
+                        User user = new User();
+                        user.setId(UUID.randomUUID().toString());
+                        user.setName(UUID.randomUUID().toString());
+                        user.setAge(1);
+                        user.setAddress("安徽合肥");
+                        Map<String, Object> props = new HashMap<>();
+                        props.put("role", "admin");
+                        props.put("point", 19);
+                        user.setProps(props);
+                        userMongoTemplate.insert(user);
+                    }
+                    countDownLatch.countDown();
+                }
+            }).start();
+        }
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("finish");
+
     }
 
     @Test
     public void testFindByName() {
-        List<User> byName = userMongoTemplate.findByName("zhangsan");
+        long start = System.currentTimeMillis();
+        List<User> byName = userMongoTemplate.findByName("0a3ed8d3-6890-461e-9775-ca9f776b08ae");
+        System.out.println(System.currentTimeMillis() - start);
         System.out.println(byName);
     }
 
@@ -55,7 +78,7 @@ class UserMongoTemplateTest {
 
     @Test
     public void testUpdateAgeById() {
-        long count = userMongoTemplate.updateAgeById("34fb8c5b-3890-46c3-b5c9-f5f69564a7f6", 23);
+        long count = userMongoTemplate.updateAgeById("0a3ed8d3-6890-461e-9775-ca9f776b08ae", 23);
         System.out.println(count);
     }
 
@@ -71,4 +94,13 @@ class UserMongoTemplateTest {
         System.out.println(byProps);
     }
 
+    @Test
+    public void testCount() {
+        System.out.println(userMongoTemplate.count());
+    }
+
+    @Test
+    public void testDelete() {
+        userMongoTemplate.delete();
+    }
 }
