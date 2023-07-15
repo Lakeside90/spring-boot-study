@@ -7,10 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -24,23 +21,30 @@ class UserMongoTemplateTest {
 
     @Test()
     public void testInsert() {
-        CountDownLatch countDownLatch = new CountDownLatch(50);
-        for (int i = 0; i < 50; i++) {
+        long start = System.currentTimeMillis();
+
+        int loop = 900;
+        CountDownLatch countDownLatch = new CountDownLatch(loop);
+        for (int i = 0; i < loop; i++) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    for (int j = 0; j < 2000; j++) {
+                    List<User> userList = new ArrayList<>();
+                    for (int j = 0; j < 1000; j++) {
                         User user = new User();
                         user.setId(UUID.randomUUID().toString());
                         user.setName(UUID.randomUUID().toString());
+                        user.setTimestamp(System.currentTimeMillis());
                         user.setAge(1);
                         user.setAddress("安徽合肥");
+                        user.setVersion(Arrays.asList(j));
                         Map<String, Object> props = new HashMap<>();
                         props.put("role", "admin");
                         props.put("point", 19);
                         user.setProps(props);
-                        userMongoTemplate.insert(user);
+                        userList.add(user);
                     }
+                    userMongoTemplate.insertList(userList);
                     countDownLatch.countDown();
                 }
             }).start();
@@ -52,7 +56,7 @@ class UserMongoTemplateTest {
             throw new RuntimeException(e);
         }
 
-        System.out.println("finish");
+        System.out.println("finish - " + (System.currentTimeMillis() - start));
 
     }
 

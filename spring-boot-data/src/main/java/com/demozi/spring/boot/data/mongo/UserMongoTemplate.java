@@ -33,6 +33,10 @@ public class UserMongoTemplate {
         mongoTemplate.insert(user);
     }
 
+    public void insertList(List<User> users) {
+        mongoTemplate.insertAll(users);
+    }
+
     public List<User> findByName(String name) {
         Query query = Query.query(Criteria.where("name").is(name));
         return mongoTemplate.find(query, User.class);
