@@ -4,7 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  *
@@ -25,6 +30,35 @@ class UserRedisTemplateTest {
         assertEquals(value, redisTemplate.get(key));
 
         System.out.println(redisTemplate.get(key));
+
+        redisTemplate.delete(key);
+        assertNull(redisTemplate.get(key));
+    }
+
+    @Test
+    public void testHashMap() {
+        String key = "map";
+        Map<String, String> value = new HashMap<>();
+        value.put("age", "20");
+        value.put("name", "zhangsan");
+        redisTemplate.saveHashMap(key, value);
+
+        Map<Object, Object> hashMap = redisTemplate.getHashMap(key);
+        hashMap.forEach((k,v) -> {
+            System.out.printf("key: " + k + "----value: " + v);
+        });
+    }
+
+    @Test
+    public void testSaveWithExpire() throws InterruptedException {
+        String key = "expire";
+        String value = "33";
+        redisTemplate.saveWithExpire(key, value, 3000);
+        System.out.println(redisTemplate.get(key));
+
+        TimeUnit.SECONDS.sleep(4);
+        System.out.println(redisTemplate.get(key));
+        assertNull(redisTemplate.get(key));
     }
 
 }
