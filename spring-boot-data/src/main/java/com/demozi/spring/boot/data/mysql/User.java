@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 public class User implements BaseEntity {
 
     /**
-     * user id.
+     * user id. 使用自增主键
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
