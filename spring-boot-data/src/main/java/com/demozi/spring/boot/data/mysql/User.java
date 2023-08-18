@@ -1,5 +1,6 @@
 package com.demozi.spring.boot.data.mysql;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,7 +29,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Entity
-@Table(name = "tb_user")
+@TableName("tb_user")
 public class User implements BaseEntity {
 
     /**
